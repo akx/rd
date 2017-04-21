@@ -5,8 +5,11 @@ import shelve
 from operator import itemgetter
 
 YOUTUBE_RES = [
-    re.compile('https://www.youtube.com/watch\?v=([^&]+)'),
-    re.compile('https://youtu.be/([^&]+)'),
+    re.compile('https?://.*?youtube.com/watch\?.*?v=([^&]+)'),
+    re.compile('https?://youtu.be/([^&]+)'),
+    re.compile('https?://.*?youtube.com/v/([^&?]+)'),
+    re.compile('https?://.*?youtube.com/embed/([^&?]+)'),
+    re.compile('https?://.*?youtube.com/attribution_link.+%2Fwatch%3Fv%3D([^%]+)'),
 ]
 
 
@@ -28,7 +31,6 @@ def process_item(item):
         if m:
             video_id = m.group(1)
     if not video_id:
-        print(item)
         return None
     score = item['ups'] - item['downs']
     return {
